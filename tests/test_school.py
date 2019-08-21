@@ -20,7 +20,7 @@ def test_schools_backend(school_fields):
     assert set(school_fields).issubset(schools[0].keys())
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def school_list():
     return [{"semel": 123123, "name": "Testing School", "years": [2019, 2020]}]
 
