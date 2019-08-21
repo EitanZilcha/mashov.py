@@ -3,7 +3,7 @@ python:
   - "3.7"
 
 before_install:
-  - pip install poetry
+  - pip install poetry coverage
 
 install:
   - poetry install
@@ -17,4 +17,4 @@ script:
   - poetry run pytest --cov=mashov
 
 after_script:
-  - poetry run ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
