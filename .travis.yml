@@ -1,7 +1,12 @@
 language: python
 python:
   - "3.7"
+
+before_install:
+  - pip install poetry
+
 install:
-  - pip install -e .
+  - poetry install
+
 script:
-  - pytest
+  - poetry run pytest
