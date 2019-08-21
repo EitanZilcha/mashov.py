@@ -1,5 +1,6 @@
-from mashov import fetch_schools
+from mashov.client import Client
 from mashov.school import School
+from mashov.exceptions import InvalidLoginError, InvalidPasswordError, InvalidUsernameError
 import pytest
 import responses
 
@@ -7,27 +8,56 @@ API_BASE_URL = "https://web.mashov.info/api"
 
 
 @pytest.fixture
-def school_fields():
-    return ["semel", "name", "years"]
-
-
-def test_schools_backend(school_fields):
-    import requests
-    schools = requests.get(f"{API_BASE_URL}/schools").json()
-    assert set(school_fields).issubset(schools[0].keys())
+def school():
+    return {"semel": 123123, "name": "Testing School", "years": [2019, 2020]}
 
 
 @pytest.fixture
-def school_list():
-    return [{"semel": 123123, "name": "Testing School", "years": [2019, 2020]}]
+def client(school):
+    return Client(School.from_dict(school), "test_username", "test_password")
+
+
+@pytest.fixture
+def invalid_password_json():
+    return {"errors": {"password": ["Invalid password"]}}
 
 
 @responses.activate
-def test_schools_parsing(school_list):
-    responses.add(responses.GET, f"{API_BASE_URL}/schools", json=school_list)
-    parsed_school = fetch_schools()[0]
-    example_school = school_list[0]
-    assert isinstance(parsed_school, School)
-    assert parsed_school.id == example_school["semel"]
-    assert parsed_school.name == example_school["name"]
-    assert parsed_school.years == example_school["years"]
+def test_invalid_password(client, invalid_password_json):
+    """
+    invalid passwords are handled
+    """
+    responses.add(responses.POST,
+                  f"{API_BASE_URL}/login",
+                  json=invalid_password_json,
+                  status=400)
+    with pytest.raises(InvalidPasswordError):
+        client.login()
+
+
+@pytest.fixture
+def invalid_username_json():
+    return {"errors": {"username": ["Invalid username"]}}
+
+
+@responses.activate
+def test_invalid_username(client, invalid_username_json):
+    """
+    invalid usernames are handled
+    """
+    responses.add(responses.POST,
+                  f"{API_BASE_URL}/login",
+                  json=invalid_username_json,
+                  status=400)
+    with pytest.raises(InvalidUsernameError):
+        client.login()
+
+
+@responses.activate
+def test_invalid_login(client):
+    """
+    invalid login is handled
+    """
+    responses.add(responses.POST, f"{API_BASE_URL}/login", status=401)
+    with pytest.raises(InvalidLoginError):
+        client.login()
