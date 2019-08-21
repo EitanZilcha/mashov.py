@@ -34,7 +34,7 @@ class Client:
         auth_dict = {
             "apiVersion": API_VERSION,
             "appName": APP_NAME,
-            "school": dict(self._school),
+            "school": self._school._asdict(),
             "semel": self._school.id,
             "year": self._year,
             "username": self._username,
