@@ -70,4 +70,4 @@ class Client:
         return self._session
 
     def get_grades(self) -> List[Grade]:
-        return get_grades_helper(self)
+        return get_grades_helper(self._session, self._guid)

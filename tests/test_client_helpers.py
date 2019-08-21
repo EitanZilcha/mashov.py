@@ -50,7 +50,7 @@ def client():
 @responses.activate
 def test_get_grades(grade_list, client):
     responses.add(responses.GET, grade_url_ex, json=grade_list)
-    grades = get_grades(client)
+    grades = get_grades(client.session, client.guid)
     assert isinstance(grades, list)
     grade = grades[0]
     example_grade = grade_list[0]
