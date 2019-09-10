@@ -1,8 +1,6 @@
 # Mashov.py
 
-[![Build Status](https://travis-ci.org/arielbeje/mashov.py.svg?branch=master)](https://travis-ci.org/arielbeje/mashov.py)
-[![Code Coverage](https://img.shields.io/codeclimate/coverage/arielbeje/mashov.py)](https://codeclimate.com/github/arielbeje/mashov.py)
-[![Maintainability](https://img.shields.io/codeclimate/maintainability/arielbeje/mashov.py)](https://codeclimate.com/github/arielbeje/mashov.py)
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Farielbeje%2Fmashov.py%2Fbadge&style=flat&label=build&logo=none)](https://actions-badge.atrox.dev/arielbeje/mashov.py/goto)
 [![License](https://img.shields.io/github/license/arielbeje/mashov.py)](https://github.com/arielbeje/mashov.py/blob/master/LICENSE)
 
 A Python API wrapper for [Mashov](https://web.mashov.info/)

@@ -14,8 +14,6 @@ rope = "^0.14.0"
 flake8 = "^3.7"
 yapf = "^0.28.0"
 responses = "^0.10.6"
-coverage = "^4.5"
-pytest-cov = "^2.7"
 
 [build-system]
 requires = ["poetry>=0.12"]
