@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   test:
-    name: Test on python ${{ matrix.python-version }} and ${{ matrix.os }}
+    name: Test on Python ${{ matrix.python-version }} and ${{ matrix.os }}
   
     runs-on: ubuntu-latest
     strategy:
@@ -32,4 +32,4 @@ jobs:
         poetry run flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        poetry run pytest --cov=mashov --cov-report=xml
+        poetry run pytest
