@@ -1,4 +1,4 @@
-from .grade import Grade
+from .models import Grade
 from typing import List
 from requests import Session
 

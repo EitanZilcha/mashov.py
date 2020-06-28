@@ -1,5 +1,5 @@
 from mashov import fetch_schools
-from mashov.school import School
+from mashov.models import School
 import pytest
 import responses
 
@@ -34,6 +34,6 @@ def test_schools_parsing(school_list):
     parsed_school = fetch_schools()[0]
     example_school = school_list[0]
     assert isinstance(parsed_school, School)
-    assert parsed_school.id == example_school["semel"]
+    assert parsed_school.semel == example_school["semel"]
     assert parsed_school.name == example_school["name"]
     assert parsed_school.years == example_school["years"]

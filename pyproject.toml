@@ -14,6 +14,8 @@ rope = "^0.14.0"
 flake8 = "^3.7"
 yapf = "^0.28.0"
 responses = "^0.10.6"
+Sphinx = "^2.2"
+sphinx-autodoc-typehints = "^1.8"
 
 [build-system]
 requires = ["poetry>=0.12"]

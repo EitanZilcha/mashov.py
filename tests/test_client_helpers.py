@@ -4,9 +4,8 @@ import re
 import responses
 
 from mashov.client_helper_funcs import get_grades
-from mashov.grade import Grade
-from mashov.client import Client
-from mashov.school import School
+from mashov.models import Grade, School
+from mashov.username_password_client import UsernamePasswordClient
 
 API_BASE_URL = "https://web.mashov.info/api"
 
@@ -38,19 +37,22 @@ def grade_list():
 
 # TODO: Use client fixture from other test file
 @pytest.fixture
-def client():
-    return Client(
-        School.from_dict({
+def username_password_client():
+    return UsernamePasswordClient(
+        school=School.from_params(**{
             "semel": 123123,
             "name": "Testing School",
             "years": [2019, 2020]
-        }), "test_username", "test_password")
+        }),
+        username="test_username",
+        password="test_password")
 
 
 @responses.activate
-def test_get_grades(grade_list, client):
+def test_get_grades(grade_list, username_password_client):
     responses.add(responses.GET, grade_url_ex, json=grade_list)
-    grades = get_grades(client.session, client.guid)
+    grades = get_grades(username_password_client.session,
+                        username_password_client.guid)
     assert isinstance(grades, list)
     grade = grades[0]
     example_grade = grade_list[0]

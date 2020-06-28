@@ -1,5 +1,5 @@
-from mashov.client import Client
-from mashov.school import School
+from mashov.username_password_client import UsernamePasswordClient
+from mashov.models import School
 from mashov.exceptions import InvalidLoginError, InvalidPasswordError, InvalidUsernameError
 import pytest
 import responses
@@ -13,8 +13,10 @@ def school():
 
 
 @pytest.fixture
-def client(school):
-    return Client(School.from_dict(school), "test_username", "test_password")
+def username_password_client(school):
+    return UsernamePasswordClient(school=School.from_params(**school),
+                                  username="test_username",
+                                  password="test_password")
 
 
 @pytest.fixture
@@ -23,7 +25,7 @@ def invalid_password_json():
 
 
 @responses.activate
-def test_invalid_password(client, invalid_password_json):
+def test_invalid_password(username_password_client, invalid_password_json):
     """
     invalid passwords are handled
     """
@@ -32,7 +34,7 @@ def test_invalid_password(client, invalid_password_json):
                   json=invalid_password_json,
                   status=400)
     with pytest.raises(InvalidPasswordError):
-        client.login()
+        username_password_client.login()
 
 
 @pytest.fixture
@@ -41,7 +43,7 @@ def invalid_username_json():
 
 
 @responses.activate
-def test_invalid_username(client, invalid_username_json):
+def test_invalid_username(username_password_client, invalid_username_json):
     """
     invalid usernames are handled
     """
@@ -50,14 +52,14 @@ def test_invalid_username(client, invalid_username_json):
                   json=invalid_username_json,
                   status=400)
     with pytest.raises(InvalidUsernameError):
-        client.login()
+        username_password_client.login()
 
 
 @responses.activate
-def test_invalid_login(client):
+def test_invalid_login(username_password_client):
     """
     invalid login is handled
     """
     responses.add(responses.POST, f"{API_BASE_URL}/login", status=401)
     with pytest.raises(InvalidLoginError):
-        client.login()
+        username_password_client.login()
